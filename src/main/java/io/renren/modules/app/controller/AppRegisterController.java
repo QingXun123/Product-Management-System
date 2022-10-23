@@ -45,7 +45,7 @@ public class AppRegisterController {
 
         UserEntity user = new UserEntity();
         user.setMobile(form.getMobile());
-        user.setUsername(form.getMobile());
+        user.setUsername(form.getUsername());
         user.setPassword(DigestUtils.sha256Hex(form.getPassword()));
         user.setCreateTime(new Date());
         userService.save(user);
