@@ -8,9 +8,11 @@
 
 package io.renren.common.utils;
 
+import io.renren.modules.app.entity.InformationDownloadEntity;
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,7 +43,7 @@ public class R extends HashMap<String, Object> {
 		return r;
 	}
 
-	public static R ok(String msg) {
+	public static R ok(String msg, HashMap<InformationDownloadEntity, List<InformationDownloadEntity>> m) {
 		R r = new R();
 		r.put("msg", msg);
 		return r;
