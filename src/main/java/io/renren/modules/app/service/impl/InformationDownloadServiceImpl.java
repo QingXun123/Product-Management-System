@@ -42,4 +42,9 @@ public class InformationDownloadServiceImpl extends ServiceImpl<InformationDownl
         return informationDownloadDao.findByBeforeId(beforeId);
     }
 
+    @Override
+    public List<InformationDownloadEntity> findByBefore() {
+        return informationDownloadDao.findByBefore();
+    }
+
 }

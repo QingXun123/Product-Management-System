@@ -21,5 +21,7 @@ public interface InformationDownloadService extends IService<InformationDownload
     List<InformationDownloadEntity> findByMain();
 
     List<InformationDownloadEntity> findByBeforeId(Integer beforeId);
+
+    List<InformationDownloadEntity> findByBefore();
 }
 

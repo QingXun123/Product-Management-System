@@ -31,9 +31,6 @@ public class InformationDownloadController {
     @Autowired
     private InformationDownloadService informationDownloadService;
 
-    @Autowired
-    private InformationDownloadDao informationDownloadDao;
-
     @PostMapping("/upload")
     @ApiOperation("文件上传")
     public R upload(MultipartFile file){
@@ -62,21 +59,17 @@ public class InformationDownloadController {
         }
     }
 
-    /**
-     * 返回资料下载列表数据
-     */
-    @GetMapping("/information")
-    @ApiOperation("列表")
-    public R find() {
-        HashMap<InformationDownloadEntity, List<InformationDownloadEntity>> iiHashMap = new HashMap<>();
-        List<InformationDownloadEntity> imain = informationDownloadService.findByMain();
-        for (InformationDownloadEntity i : imain) {
-            List<InformationDownloadEntity> isecondary = informationDownloadService.findByBeforeId(i.getId());
-            iiHashMap.put(i, isecondary);
-        }
-
-        return R.ok().put("data", iiHashMap);
-    }
+//    /**
+//     * 返回资料下载列表数据
+//     */
+//    @GetMapping("/information")
+//    @ApiOperation("列表")
+//    public R find() {
+//        List<List<InformationDownloadEntity>> iiList
+//
+//        return R.ok().put("main", informationDownloadService.findByMain())
+//                .put("before", informationDownloadService.findByBefore());
+//    }
 
     /**
      * 列表
