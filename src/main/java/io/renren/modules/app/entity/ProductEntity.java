@@ -36,5 +36,9 @@ public class ProductEntity implements Serializable {
 	 * 
 	 */
 	private Integer hot;
+	/**
+	 *
+	 */
+	private Integer typeId;
 
 }

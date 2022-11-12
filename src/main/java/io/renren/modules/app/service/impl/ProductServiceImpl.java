@@ -1,5 +1,7 @@
 package io.renren.modules.app.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.stereotype.Service;
@@ -35,12 +37,16 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> i
 
     @Override
     public List<ProductEntity> findByHot() {
-        return productDao.findByHot();
+        LambdaQueryWrapper<ProductEntity> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(ProductEntity::getHot, 1);
+        return productDao.selectList(lqw);
     }
 
     @Override
     public List<ProductEntity> findBySlideshow() {
-        return productDao.findBySlideshow();
+        LambdaQueryWrapper<ProductEntity> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(ProductEntity::getTypeId, 1);
+        return productDao.selectList(lqw);
     }
 
 }

@@ -33,7 +33,7 @@ public class InformationDownloadController {
 
     @PostMapping("/upload")
     @ApiOperation("文件上传")
-    public R upload(MultipartFile file){
+    public R upload(@RequestParam("file") MultipartFile file){
         //获取文件名
         String fileName = file.getOriginalFilename();
         //获取文件后缀名
