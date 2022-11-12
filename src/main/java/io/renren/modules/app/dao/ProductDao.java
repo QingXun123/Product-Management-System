@@ -17,10 +17,4 @@ import java.util.List;
 @Mapper
 public interface ProductDao extends BaseMapper<ProductEntity> {
 
-    @Select("select * from product where hot = 1")
-    List<ProductEntity> findByHot();
-
-    @Select("select * from product where type_id = 1")
-    List<ProductEntity> findBySlideshow();
-	
 }

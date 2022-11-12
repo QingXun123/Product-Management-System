@@ -18,13 +18,4 @@ import java.util.List;
 @Mapper
 public interface InformationDownloadDao extends BaseMapper<InformationDownloadEntity> {
 
-    @Select("select * from information_download where before_id is null;")
-    List<InformationDownloadEntity> findByMain();
-
-    @Select("select * from information_download where before_id = #{beforeId};")
-    List<InformationDownloadEntity> findByBeforeId(@Param("beforeId") Integer beforeId);
-
-
-    @Select("select * from information_download where before_id is not null")
-    List<InformationDownloadEntity> findByBefore();
 }

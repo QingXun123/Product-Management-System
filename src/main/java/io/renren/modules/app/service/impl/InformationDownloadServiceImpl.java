@@ -1,5 +1,7 @@
 package io.renren.modules.app.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import io.renren.modules.app.entity.ProductEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,17 +36,23 @@ public class InformationDownloadServiceImpl extends ServiceImpl<InformationDownl
 
     @Override
     public List<InformationDownloadEntity> findByMain() {
-        return informationDownloadDao.findByMain();
+        LambdaQueryWrapper<InformationDownloadEntity> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(InformationDownloadEntity::getBeforeId, null);
+        return informationDownloadDao.selectList(lqw);
     }
 
     @Override
     public List<InformationDownloadEntity> findByBeforeId(Integer beforeId) {
-        return informationDownloadDao.findByBeforeId(beforeId);
+        LambdaQueryWrapper<InformationDownloadEntity> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(InformationDownloadEntity::getBeforeId, beforeId);
+        return informationDownloadDao.selectList(lqw);
     }
 
     @Override
     public List<InformationDownloadEntity> findByBefore() {
-        return informationDownloadDao.findByBefore();
+        LambdaQueryWrapper<InformationDownloadEntity> lqw = new LambdaQueryWrapper<>();
+        lqw.ne(InformationDownloadEntity::getBeforeId, null);
+        return informationDownloadDao.selectList(lqw);
     }
 
 }
