@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -34,7 +35,8 @@ public class ProductController {
     @ApiOperation("轮播图")
     @GetMapping("/slideshow")
     public R slideshow() {
-        List<ProductEntity> bySlideshow = productService.findBySlideshow();
+        List<ProductEntity> bySlideshow = productService.list(new LambdaQueryWrapper<ProductEntity>()
+                .eq(ProductEntity::getTypeId, 1));
         if (bySlideshow.isEmpty())
             return R.error("数据为空！");
         return R.ok().put("data", bySlideshow);
@@ -43,7 +45,8 @@ public class ProductController {
     @ApiOperation("热门产品")
     @GetMapping("/hot")
     public R hot() {
-        List<ProductEntity> byHot = productService.findByHot();
+        List<ProductEntity> byHot = productService.list(new LambdaQueryWrapper<ProductEntity>()
+                .eq(ProductEntity::getHot, 1));
         if (byHot.isEmpty())
             return R.error("数据为空！");
         return R.ok().put("data", byHot);

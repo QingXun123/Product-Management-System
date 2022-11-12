@@ -17,9 +17,5 @@ import java.util.Map;
 public interface ProductService extends IService<ProductEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
-
-    List<ProductEntity> findByHot();
-
-    List<ProductEntity> findBySlideshow();
 }
 

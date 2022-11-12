@@ -34,25 +34,4 @@ public class InformationDownloadServiceImpl extends ServiceImpl<InformationDownl
         return new PageUtils(page);
     }
 
-    @Override
-    public List<InformationDownloadEntity> findByMain() {
-        LambdaQueryWrapper<InformationDownloadEntity> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(InformationDownloadEntity::getBeforeId, null);
-        return informationDownloadDao.selectList(lqw);
-    }
-
-    @Override
-    public List<InformationDownloadEntity> findByBeforeId(Integer beforeId) {
-        LambdaQueryWrapper<InformationDownloadEntity> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(InformationDownloadEntity::getBeforeId, beforeId);
-        return informationDownloadDao.selectList(lqw);
-    }
-
-    @Override
-    public List<InformationDownloadEntity> findByBefore() {
-        LambdaQueryWrapper<InformationDownloadEntity> lqw = new LambdaQueryWrapper<>();
-        lqw.ne(InformationDownloadEntity::getBeforeId, null);
-        return informationDownloadDao.selectList(lqw);
-    }
-
 }
