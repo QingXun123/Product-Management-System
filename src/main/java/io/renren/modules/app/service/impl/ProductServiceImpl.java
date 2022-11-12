@@ -35,18 +35,4 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> i
         return new PageUtils(page);
     }
 
-    @Override
-    public List<ProductEntity> findByHot() {
-        LambdaQueryWrapper<ProductEntity> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(ProductEntity::getHot, 1);
-        return productDao.selectList(lqw);
-    }
-
-    @Override
-    public List<ProductEntity> findBySlideshow() {
-        LambdaQueryWrapper<ProductEntity> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(ProductEntity::getTypeId, 1);
-        return productDao.selectList(lqw);
-    }
-
 }

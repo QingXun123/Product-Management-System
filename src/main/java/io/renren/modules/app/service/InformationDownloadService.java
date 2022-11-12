@@ -17,11 +17,5 @@ import java.util.Map;
 public interface InformationDownloadService extends IService<InformationDownloadEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
-
-    List<InformationDownloadEntity> findByMain();
-
-    List<InformationDownloadEntity> findByBeforeId(Integer beforeId);
-
-    List<InformationDownloadEntity> findByBefore();
 }
 

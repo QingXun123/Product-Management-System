@@ -3,6 +3,7 @@ package io.renren.modules.app.controller;
 import java.io.File;
 import java.util.*;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.renren.modules.app.dao.InformationDownloadDao;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -59,17 +60,18 @@ public class InformationDownloadController {
         }
     }
 
-//    /**
-//     * 返回资料下载列表数据
-//     */
-//    @GetMapping("/information")
-//    @ApiOperation("列表")
-//    public R find() {
-//        List<List<InformationDownloadEntity>> iiList
-//
-//        return R.ok().put("main", informationDownloadService.findByMain())
-//                .put("before", informationDownloadService.findByBefore());
-//    }
+    /**
+     * 返回资料下载列表数据
+     */
+    @GetMapping("/information")
+    @ApiOperation("列表")
+    public R find() {
+
+        return R.ok().put("main", informationDownloadService.list(new LambdaQueryWrapper<InformationDownloadEntity>()
+                        .eq(InformationDownloadEntity::getBeforeId, null)))
+                .put("before", informationDownloadService.list(new LambdaQueryWrapper<InformationDownloadEntity>()
+                        .ne(InformationDownloadEntity::getBeforeId, null)));
+    }
 
     /**
      * 列表
