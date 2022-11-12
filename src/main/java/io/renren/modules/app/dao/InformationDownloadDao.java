@@ -24,4 +24,7 @@ public interface InformationDownloadDao extends BaseMapper<InformationDownloadEn
     @Select("select * from information_download where before_id = #{beforeId};")
     List<InformationDownloadEntity> findByBeforeId(@Param("beforeId") Integer beforeId);
 
+
+    @Select("select * from information_download where before_id is not null")
+    List<InformationDownloadEntity> findByBefore();
 }

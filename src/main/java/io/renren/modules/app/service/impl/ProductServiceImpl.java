@@ -1,6 +1,10 @@
 package io.renren.modules.app.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.AccessType;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,6 +20,9 @@ import io.renren.modules.app.service.ProductService;
 @Service("productService")
 public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> implements ProductService {
 
+    @Autowired
+    private ProductDao productDao;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<ProductEntity> page = this.page(
@@ -24,6 +31,16 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> i
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<ProductEntity> findByHot() {
+        return productDao.findByHot();
+    }
+
+    @Override
+    public List<ProductEntity> findBySlideshow() {
+        return productDao.findBySlideshow();
     }
 
 }

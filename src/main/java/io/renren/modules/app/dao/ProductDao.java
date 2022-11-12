@@ -3,6 +3,9 @@ package io.renren.modules.app.dao;
 import io.renren.modules.app.entity.ProductEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * 
@@ -13,5 +16,11 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ProductDao extends BaseMapper<ProductEntity> {
+
+    @Select("select * from product where hot = 1")
+    List<ProductEntity> findByHot();
+
+    @Select("select * from product where type_id = 1")
+    List<ProductEntity> findBySlideshow();
 	
 }
