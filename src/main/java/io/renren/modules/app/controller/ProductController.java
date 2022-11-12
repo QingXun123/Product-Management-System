@@ -36,7 +36,7 @@ public class ProductController {
     @GetMapping("/slideshow")
     public R slideshow() {
         List<ProductEntity> bySlideshow = productService.list(new LambdaQueryWrapper<ProductEntity>()
-                .eq(ProductEntity::getTypeId, 1));
+                .eq(ProductEntity::getSlide, 1));
         if (bySlideshow.isEmpty())
             return R.error("数据为空！");
         return R.ok().put("data", bySlideshow);
