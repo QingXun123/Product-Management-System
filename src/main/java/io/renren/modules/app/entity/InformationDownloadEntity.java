@@ -36,9 +36,5 @@ public class InformationDownloadEntity implements Serializable {
 	 * 链接
 	 */
 	private String url;
-	/**
-	 * 富文本
-	 */
-	private String text;
 
 }
