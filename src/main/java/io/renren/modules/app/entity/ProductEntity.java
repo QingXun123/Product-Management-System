@@ -20,25 +20,29 @@ public class ProductEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 * 产品id
 	 */
 	@TableId
 	private Integer productId;
 	/**
-	 * 
+	 * 产品名称
 	 */
 	private String name;
 	/**
-	 * 
+	 * 产品图片链接
 	 */
 	private String photo;
 	/**
-	 * 
+	 * 热门标识
 	 */
 	private Integer hot;
 	/**
-	 *
+	 * 分类标识
 	 */
 	private Integer typeId;
+	/**
+	 * 轮播图标识
+	 */
+	private Integer slide;
 
 }

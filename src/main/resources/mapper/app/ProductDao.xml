@@ -10,6 +10,7 @@
         <result property="photo" column="photo"/>
         <result property="hot" column="hot"/>
         <result property="typeId" column="type_id"/>
+        <result property="slide" column="slide"/>
     </resultMap>
 
 
