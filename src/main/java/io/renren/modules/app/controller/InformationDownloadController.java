@@ -5,6 +5,7 @@ import java.util.*;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.renren.modules.app.dao.InformationDownloadDao;
+import io.renren.modules.app.entity.InformationListEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -18,6 +19,8 @@ import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import org.springframework.web.multipart.MultipartFile;
 
+import static io.lettuce.core.GeoArgs.Unit.m;
+
 
 /**
  * 
@@ -28,62 +31,26 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("app/informationdownload")
-@Api("资料下载接口")
+@Api("资料下载")
 public class InformationDownloadController {
     @Autowired
     private InformationDownloadService informationDownloadService;
-
-    @PostMapping("/upload")
-    @ApiOperation("文件上传")
-    public R file(@RequestParam("file") MultipartFile multipartFile, @RequestParam("id") Integer id){
-        //判断文件是否为空 isEmpty
-        if (multipartFile == null){
-            return R.error("文件为空");
-        }
-        //获取文件的原名称 getOriginalFilename
-        String OriginalFilename = multipartFile.getOriginalFilename();
-        //获取时间戳和文件的扩展名，拼接成一个全新的文件名； 用时间戳来命名是为了避免文件名冲突
-        String fileName = System.currentTimeMillis()+"."+OriginalFilename.substring(OriginalFilename.lastIndexOf(".")+1);
-        //定义文件存放路径
-        String filePath = "E:\\ljtImages\\check";
-        //新建一个目录（文件夹）
-        File dest = new File(filePath+"\\"+fileName);
-        //判断filePath目录是否存在，如不存在，就新建一个
-        if (!dest.getParentFile().canExecute()){
-            dest.getParentFile().mkdirs(); //新建一个目录
-        }
-        try {
-            //文件输出
-            multipartFile.transferTo(dest);
-        }
-        catch ( Exception e) {
-            e.printStackTrace();
-            //拷贝失败要有提示
-            return R.error("上传失败");
-        }
-        InformationDownloadEntity ide = informationDownloadService.getOne(new LambdaQueryWrapper<InformationDownloadEntity>()
-                .eq(InformationDownloadEntity::getId, id));
-        ide.setUrl(filePath+"\\"+fileName);
-        informationDownloadService.updateById(ide);
-        return R.ok().put("data", fileName);
-    }
 
     /**
      * 返回资料下载列表数据
      */
     @GetMapping("/information")
-    @ApiOperation("列表")
+    @ApiOperation("资料下载列表")
     public R find() {
-        HashMap<InformationDownloadEntity, List<InformationDownloadEntity>> m = new HashMap<>();
+        List<InformationListEntity> ileL = new ArrayList<>();
         List<InformationDownloadEntity> ide = informationDownloadService.list(new LambdaQueryWrapper<InformationDownloadEntity>()
                 .isNull(InformationDownloadEntity::getBeforeId));
         for (InformationDownloadEntity i : ide) {
-            List<InformationDownloadEntity> ideBefore = informationDownloadService.list(new LambdaQueryWrapper<InformationDownloadEntity>()
-                    .eq(InformationDownloadEntity::getBeforeId, i.getId()));
-            m.put(i, ideBefore);
+            ileL.add(new InformationListEntity(i, informationDownloadService.list(new LambdaQueryWrapper<InformationDownloadEntity>()
+                    .eq(InformationDownloadEntity::getBeforeId, i.getId()))));
         }
 
-        return R.ok().put("data", m);
+        return R.ok().put("data", ileL);
     }
 
     /**

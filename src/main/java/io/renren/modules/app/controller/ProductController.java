@@ -1,10 +1,12 @@
 package io.renren.modules.app.controller;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import io.renren.modules.app.entity.InformationDownloadEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -15,7 +17,7 @@ import io.renren.modules.app.entity.ProductEntity;
 import io.renren.modules.app.service.ProductService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
-
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -51,7 +53,6 @@ public class ProductController {
             return R.error("数据为空！");
         return R.ok().put("data", byHot);
     }
-
 
     /**
      * 列表
