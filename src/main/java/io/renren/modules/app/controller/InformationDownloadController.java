@@ -31,10 +31,32 @@ import static io.lettuce.core.GeoArgs.Unit.m;
  */
 @RestController
 @RequestMapping("app/informationdownload")
-@Api("资料下载")
+@Api(tags = "资料下载")
 public class InformationDownloadController {
     @Autowired
     private InformationDownloadService informationDownloadService;
+
+    /**
+     * 返回资料下载列表数据
+     */
+    @GetMapping("/test")
+    @ApiOperation("测试")
+    public R test() {
+        InformationDownloadEntity ide = informationDownloadService.getOne(new LambdaQueryWrapper<InformationDownloadEntity>()
+                .eq(InformationDownloadEntity::getId, 2));
+        return R.ok().put("data", ide.getText().replaceAll("\\s*|\t|\r|\n", ""));
+    }
+
+    @GetMapping
+    @ApiOperation("关于我们")
+    public R aboutUs() {
+        InformationDownloadEntity ide = informationDownloadService.getOne(new LambdaQueryWrapper<InformationDownloadEntity>()
+                .eq(InformationDownloadEntity::getName, "关于我们"));
+        if (ide == null) {
+            return R.error("页面不存在！");
+        }
+        return R.ok().put("data", ide.getText().replaceAll("\\s*|\t|\r|\n", ""));
+    }
 
     /**
      * 返回资料下载列表数据
@@ -46,8 +68,13 @@ public class InformationDownloadController {
         List<InformationDownloadEntity> ide = informationDownloadService.list(new LambdaQueryWrapper<InformationDownloadEntity>()
                 .isNull(InformationDownloadEntity::getBeforeId));
         for (InformationDownloadEntity i : ide) {
-            ileL.add(new InformationListEntity(i, informationDownloadService.list(new LambdaQueryWrapper<InformationDownloadEntity>()
-                    .eq(InformationDownloadEntity::getBeforeId, i.getId()))));
+            List<InformationDownloadEntity> ideL = informationDownloadService.list(new LambdaQueryWrapper<InformationDownloadEntity>()
+                    .eq(InformationDownloadEntity::getBeforeId, i.getId()));
+            for(InformationDownloadEntity ii : ideL) {
+                if (ii.getText() != null)
+                    ii.setText(ii.getText().replaceAll("\\s*|\t|\r|\n", ""));
+            }
+            ileL.add(new InformationListEntity(i, ideL));
         }
 
         return R.ok().put("data", ileL);
