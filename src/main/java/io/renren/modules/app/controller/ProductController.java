@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("app/product")
-@Api("产品信息")
+@Api(tags = "产品信息")
 public class ProductController {
     @Autowired
     private ProductService productService;

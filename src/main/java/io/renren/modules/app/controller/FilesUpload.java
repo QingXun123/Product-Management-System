@@ -17,7 +17,7 @@ import java.io.File;
 
 @RestController
 @RequestMapping("app/upload")
-@Api("文件上传")
+@Api(tags = "文件上传")
 public class FilesUpload {
 
     @Autowired
