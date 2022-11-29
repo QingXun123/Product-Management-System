@@ -36,15 +36,15 @@ public class InformationDownloadController {
     @Autowired
     private InformationDownloadService informationDownloadService;
 
-    /**
-     * 返回资料下载列表数据
-     */
-    @GetMapping("/test")
-    @ApiOperation("测试")
-    public R test() {
+    @GetMapping("/text/{id}")
+    @ApiOperation("根据产品id拿到富文本数据")
+    public R get(@RequestParam("id") Integer id) {
         InformationDownloadEntity ide = informationDownloadService.getOne(new LambdaQueryWrapper<InformationDownloadEntity>()
-                .eq(InformationDownloadEntity::getId, 2));
-        return R.ok().put("data", ide.getText().replaceAll("\\s*|\t|\r|\n", ""));
+                .eq(InformationDownloadEntity::getId, id));
+        if (ide == null) {
+            return R.error("页面不存在！");
+        }
+        return R.ok().put("data", ide.getText().replaceAll("\t|\r|\n", ""));
     }
 
     @GetMapping
@@ -55,7 +55,7 @@ public class InformationDownloadController {
         if (ide == null) {
             return R.error("页面不存在！");
         }
-        return R.ok().put("data", ide.getText().replaceAll("\\s*|\t|\r|\n", ""));
+        return R.ok().put("data", ide.getText().replaceAll("\t|\r|\n", ""));
     }
 
     /**
@@ -72,7 +72,7 @@ public class InformationDownloadController {
                     .eq(InformationDownloadEntity::getBeforeId, i.getId()));
             for(InformationDownloadEntity ii : ideL) {
                 if (ii.getText() != null)
-                    ii.setText(ii.getText().replaceAll("\\s*|\t|\r|\n", ""));
+                    ii.setText(ii.getText().replaceAll("\t|\r|\n", ""));
             }
             ileL.add(new InformationListEntity(i, ideL));
         }
