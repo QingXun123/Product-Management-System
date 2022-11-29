@@ -33,6 +33,10 @@ public class ProductEntity implements Serializable {
 	 */
 	private String photo;
 	/**
+	 * 富文本
+	 */
+	private String text;
+	/**
 	 * 热门标识
 	 */
 	private Integer hot;

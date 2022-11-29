@@ -1,23 +1,19 @@
 package io.renren.modules.app.controller;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import io.renren.modules.app.entity.InformationDownloadEntity;
+import io.renren.common.utils.PageUtils;
+import io.renren.common.utils.R;
+import io.renren.modules.app.entity.ProductEntity;
+import io.renren.modules.app.service.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import io.renren.modules.app.entity.ProductEntity;
-import io.renren.modules.app.service.ProductService;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.R;
-import org.springframework.web.multipart.MultipartFile;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -33,6 +29,28 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductController {
     @Autowired
     private ProductService productService;
+
+    @ApiOperation("产品模糊查询")
+    @GetMapping("/like/{pname}")
+    public R getLike(@RequestParam("pname") String name) {
+        List<ProductEntity> list = productService.list(new LambdaQueryWrapper<ProductEntity>().like(ProductEntity::getName, name));
+        if (list == null) {
+            return R.ok();
+        }
+        return R.ok().put("data", list);
+    }
+
+    @ApiOperation("产品的详细信息")
+    @GetMapping("/get/{id}")
+    public R getProduct(@RequestParam("id") Integer id) {
+        ProductEntity ide = productService.getOne(new LambdaQueryWrapper<ProductEntity>()
+                .eq(ProductEntity::getProductId, id));
+        ide.setText(ide.getText().replaceAll("\\s*|\t|\n|\r", ""));
+        if (ide == null) {
+            return R.error("产品不存在！");
+        }
+        return R.ok().put("data", ide);
+    }
 
     @ApiOperation("轮播图")
     @GetMapping("/slideshow")
