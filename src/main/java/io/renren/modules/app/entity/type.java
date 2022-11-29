@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @TableName("type")
@@ -20,5 +21,10 @@ public class type implements Serializable {
      * 类型名字
      */
     private String name;
+    private List<ProductEntity> product;
+
+    public void type(List<ProductEntity> product) {
+        this.product = product;
+    }
 
 }

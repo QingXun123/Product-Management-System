@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-@TableName("user")
+@TableName("yx")
 public class yx implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -16,10 +16,7 @@ public class yx implements Serializable {
      */
     @TableId
     private Integer id;
-    /**
-     * 用户名字
-     */
-    private String name;
+
     /**
      * 用户邮箱
      */
