@@ -18,7 +18,7 @@ import java.io.File;
 @RestController
 @RequestMapping("app/upload")
 @Api(tags = "文件上传")
-public class FilesUpload {
+public class FilesUploadController {
 
     @Autowired
     private ProductService productService;
@@ -55,8 +55,9 @@ public class FilesUpload {
         }
         ProductEntity ide = productService.getOne(new LambdaQueryWrapper<ProductEntity>()
                 .eq(ProductEntity::getProductId, id));
-        ide.setPhoto(filePath+"\\"+fileName);
+        String url = "/photo/" + fileName;
+        ide.setPhoto(url);
         productService.updateById(ide);
-        return R.ok().put("data", filePath + fileName);
+        return R.ok().put("data", url);
     }
 }
