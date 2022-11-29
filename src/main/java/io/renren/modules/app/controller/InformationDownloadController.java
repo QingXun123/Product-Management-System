@@ -20,6 +20,7 @@ import io.renren.common.utils.R;
 import org.springframework.web.multipart.MultipartFile;
 
 import static io.lettuce.core.GeoArgs.Unit.m;
+import static io.renren.modules.app.utils.PhotoUtils.PHOTO_URL_REGEX;
 
 
 /**
@@ -44,7 +45,7 @@ public class InformationDownloadController {
         if (ide == null) {
             return R.error("页面不存在！");
         }
-        return R.ok().put("data", ide.getText().replaceAll("\t|\r|\n", ""));
+        return R.ok().put("data", ide.getText().replaceAll(PHOTO_URL_REGEX, ""));
     }
 
     @GetMapping
@@ -55,7 +56,7 @@ public class InformationDownloadController {
         if (ide == null) {
             return R.error("页面不存在！");
         }
-        return R.ok().put("data", ide.getText().replaceAll("\t|\r|\n", ""));
+        return R.ok().put("data", ide.getText().replaceAll(PHOTO_URL_REGEX, ""));
     }
 
     /**
@@ -72,7 +73,7 @@ public class InformationDownloadController {
                     .eq(InformationDownloadEntity::getBeforeId, i.getId()));
             for(InformationDownloadEntity ii : ideL) {
                 if (ii.getText() != null)
-                    ii.setText(ii.getText().replaceAll("\t|\r|\n", ""));
+                    ii.setText(ii.getText().replaceAll(PHOTO_URL_REGEX, ""));
             }
             ileL.add(new InformationListEntity(i, ideL));
         }
