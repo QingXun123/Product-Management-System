@@ -1,58 +1,56 @@
 package io.renren.modules.app.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import io.renren.common.utils.R;
+import io.renren.modules.app.entity.ProductEntity;
+import io.renren.modules.app.utils.BASE64DecodedMultipartFile;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
-import io.renren.common.utils.R;
-import io.renren.modules.app.dao.ProductDao;
-import io.renren.modules.app.entity.ProductEntity;
-import io.renren.modules.app.service.ProductService;
-import io.renren.modules.app.utils.BASE64DecodedMultipartFile;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.util.Map;
+import io.renren.modules.app.dao.PhotoDao;
+import io.renren.modules.app.entity.PhotoEntity;
+import io.renren.modules.app.service.PhotoService;
+import org.springframework.web.multipart.MultipartFile;
 
 import static io.renren.modules.app.utils.PhotoUtils.PHOTO_URL;
 
 
-@Service("productService")
-public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> implements ProductService {
-
-    @Autowired
-    private ProductDao productDao;
+@Service("photoService")
+public class PhotoServiceImpl extends ServiceImpl<PhotoDao, PhotoEntity> implements PhotoService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<ProductEntity> page = this.page(
-                new Query<ProductEntity>().getPage(params),
-                new QueryWrapper<ProductEntity>()
+        IPage<PhotoEntity> page = this.page(
+                new Query<PhotoEntity>().getPage(params),
+                new QueryWrapper<PhotoEntity>()
         );
 
         return new PageUtils(page);
     }
 
     @Override
-    public R RUpdate(ProductEntity product) {
-        MultipartFile file = BASE64DecodedMultipartFile.base64ToMultipart(product.getPhoto());
-        product.setPhoto(null);
-        updateById(product);
-        upFile(file, product.getProductId());
+    public R RUpdate(PhotoEntity photo) {
+        MultipartFile file = BASE64DecodedMultipartFile.base64ToMultipart(photo.getPhoto());
+        photo.setPhoto(null);
+        updateById(photo);
+        upFile(file, photo.getId());
 
         return R.ok();
     }
 
     @Override
-    public R RSave(ProductEntity product) {
-        MultipartFile file = BASE64DecodedMultipartFile.base64ToMultipart(product.getPhoto());
-        product.setPhoto(null);
-        save(product);
-        upFile(file, product.getProductId());
+    public R RSave(PhotoEntity photo) {
+        MultipartFile file = BASE64DecodedMultipartFile.base64ToMultipart(photo.getPhoto());
+        photo.setPhoto(null);
+        save(photo);
+        upFile(file, photo.getId());
 
         return R.ok();
     }
@@ -69,7 +67,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> i
         //以产品id命名来保证不产生多余图片
         String fileName = id + "." + OriginalFilename.substring(OriginalFilename.lastIndexOf(".")+1);
         //定义文件存放路径
-        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\file\\product";
+        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\file\\photo";
         //新建一个目录（文件夹）
         File dest = new File(filePath+"\\"+fileName);
         //判断filePath目录是否存在，如不存在，就新建一个
@@ -85,9 +83,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> i
             //拷贝失败要有提示
             return;
         }
-        ProductEntity ide = getOne(new LambdaQueryWrapper<ProductEntity>()
-                .eq(ProductEntity::getProductId, id));
-        String url = PHOTO_URL + "product" + fileName;
+        PhotoEntity ide = getOne(new LambdaQueryWrapper<PhotoEntity>()
+                .eq(PhotoEntity::getId, id));
+        String url = PHOTO_URL + "photo" + fileName;
         ide.setPhoto(url);
         updateById(ide);
     }

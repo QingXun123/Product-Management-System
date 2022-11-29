@@ -5,12 +5,15 @@ import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.app.entity.ProductEntity;
 import io.renren.modules.app.service.ProductService;
+import io.renren.modules.app.utils.BASE64DecodedMultipartFile;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -101,9 +104,7 @@ public class ProductController {
     @RequestMapping("/save")
     @RequiresPermissions("app:product:save")
     public R save(@RequestBody ProductEntity product){
-		productService.save(product);
-
-        return R.ok();
+		return productService.RSave(product);
     }
 
     /**
@@ -112,9 +113,7 @@ public class ProductController {
     @RequestMapping("/update")
     @RequiresPermissions("app:product:update")
     public R update(@RequestBody ProductEntity product){
-		productService.updateById(product);
-
-        return R.ok();
+        return productService.RUpdate(product);
     }
 
     /**

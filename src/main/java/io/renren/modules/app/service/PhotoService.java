@@ -3,24 +3,23 @@ package io.renren.modules.app.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
-import io.renren.modules.app.entity.ProductEntity;
+import io.renren.modules.app.entity.PhotoEntity;
 
-import java.util.List;
 import java.util.Map;
 
 /**
- * 
+ * 页面图片表
  *
  * @author QingXun
  * @email 947338658@qq.com
- * @date 2022-11-08 19:46:44
+ * @date 2022-11-30 01:38:31
  */
-public interface ProductService extends IService<ProductEntity> {
+public interface PhotoService extends IService<PhotoEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    R RUpdate(ProductEntity product);
+    R RUpdate(PhotoEntity photo);
 
-    R RSave(ProductEntity product);
+    R RSave(PhotoEntity photo);
 }
 
