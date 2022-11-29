@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static io.renren.modules.app.utils.PhotoUtils.PHOTO_URL_REGEX;
+
 
 /**
  * 
@@ -48,7 +50,7 @@ public class ProductController {
     public R getProduct(@RequestParam("id") Integer id) {
         ProductEntity ide = productService.getOne(new LambdaQueryWrapper<ProductEntity>()
                 .eq(ProductEntity::getProductId, id));
-        ide.setText(ide.getText().replaceAll("\\s*|\t|\n|\r", ""));
+        ide.setText(ide.getText().replaceAll(PHOTO_URL_REGEX, ""));
         if (ide == null) {
             return R.error("产品不存在！");
         }
