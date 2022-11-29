@@ -103,8 +103,8 @@ public class ProductController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    @RequiresPermissions("app:product:save")
+    @ApiOperation("保存")
+    @PostMapping("/save")
     public R save(@RequestBody ProductEntity product){
 		return productService.RSave(product);
     }
