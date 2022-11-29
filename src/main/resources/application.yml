@@ -9,10 +9,6 @@ server:
   servlet:
     context-path: /renren-fast
 
-file:
-  staticAccessPath: /upload/**
-  uploadFolder: E:\\Git\\zhengdianyuanzi\\renren-zdyz\\src\\main\\resources\\file\\product
-
 spring:
   # 环境 dev|test|prod
   profiles:
