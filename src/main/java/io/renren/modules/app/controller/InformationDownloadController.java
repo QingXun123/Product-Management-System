@@ -48,6 +48,17 @@ public class InformationDownloadController {
         return R.ok().put("data", ide.getText().replaceAll(PHOTO_URL_REGEX, ""));
     }
 
+    @GetMapping("/imformationdl")
+    @ApiOperation("资料下载")
+    public R InformationDL() {
+        InformationDownloadEntity ide = informationDownloadService.getOne(new LambdaQueryWrapper<InformationDownloadEntity>()
+                .eq(InformationDownloadEntity::getName, "资料下载"));
+        if (ide == null) {
+            return R.error("页面不存在！");
+        }
+        return R.ok().put("data", ide.getText().replaceAll(PHOTO_URL_REGEX, ""));
+    }
+
     @GetMapping
     @ApiOperation("关于我们")
     public R aboutUs() {

@@ -85,7 +85,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoDao, PhotoEntity> impleme
         }
         PhotoEntity ide = getOne(new LambdaQueryWrapper<PhotoEntity>()
                 .eq(PhotoEntity::getId, id));
-        String url = PHOTO_URL + "photo" + fileName;
+        String url = PHOTO_URL + "photo/" + fileName;
         ide.setPhoto(url);
         updateById(ide);
     }

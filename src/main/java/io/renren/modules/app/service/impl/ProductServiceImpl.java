@@ -87,7 +87,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> i
         }
         ProductEntity ide = getOne(new LambdaQueryWrapper<ProductEntity>()
                 .eq(ProductEntity::getProductId, id));
-        String url = PHOTO_URL + "product" + fileName;
+        String url = PHOTO_URL + "product/" + fileName;
         ide.setPhoto(url);
         updateById(ide);
     }
