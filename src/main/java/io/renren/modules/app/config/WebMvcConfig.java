@@ -19,6 +19,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+import static io.renren.modules.app.utils.PhotoUtils.FILE_EXPLORER;
+
 /**
  * MVC配置
  *
@@ -44,6 +46,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/photo/**")
-                .addResourceLocations("file:E:\\Git\\zhengdianyuanzi\\renren-zdyz\\src\\main\\resources\\file\\");
+                .addResourceLocations(FILE_EXPLORER);
     }
 }

@@ -71,6 +71,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> i
         //定义文件存放路径
         String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\file\\product";
         //新建一个目录（文件夹）
+        System.out.println("\n\n\n\n"+filePath+"\\"+fileName+"\n\n\n\n");
         File dest = new File(filePath+"\\"+fileName);
         //判断filePath目录是否存在，如不存在，就新建一个
         if (!dest.getParentFile().canExecute()){
