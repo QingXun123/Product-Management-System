@@ -28,7 +28,7 @@ import static io.renren.modules.app.utils.PhotoUtils.PHOTO_URL_REGEX;
  */
 @RestController
 @RequestMapping("app/informationdownload")
-@Api(tags = "资料下载")
+@Api(tags = "资料下载列表")
 public class InformationDownloadController {
     @Autowired
     private InformationDownloadService informationDownloadService;
@@ -40,7 +40,7 @@ public class InformationDownloadController {
     @ApiOperation("最高级资料列表")
     public R topList() {
         List<InformationDownloadEntity> ideL = informationDownloadService.list(new LambdaQueryWrapper<InformationDownloadEntity>()
-                .isNull(InformationDownloadEntity::getBeforeId).ne(InformationDownloadEntity::getName, "关于我们").ne(InformationDownloadEntity::getName, "资料下载"));
+                .isNull(InformationDownloadEntity::getBeforeId));
         return R.ok().put("data", ideL);
     }
 
@@ -49,28 +49,6 @@ public class InformationDownloadController {
     public R get(@RequestParam("id") Integer id) {
         InformationDownloadEntity ide = informationDownloadService.getOne(new LambdaQueryWrapper<InformationDownloadEntity>()
                 .eq(InformationDownloadEntity::getId, id));
-        if (ide == null) {
-            return R.error("页面不存在！");
-        }
-        return R.ok().put("data", ide.getText().replaceAll(PHOTO_URL_REGEX, ""));
-    }
-
-    @GetMapping("/imformationdl")
-    @ApiOperation("资料下载")
-    public R InformationDL() {
-        InformationDownloadEntity ide = informationDownloadService.getOne(new LambdaQueryWrapper<InformationDownloadEntity>()
-                .eq(InformationDownloadEntity::getName, "资料下载"));
-        if (ide == null) {
-            return R.error("页面不存在！");
-        }
-        return R.ok().put("data", ide.getText().replaceAll(PHOTO_URL_REGEX, ""));
-    }
-
-    @GetMapping
-    @ApiOperation("关于我们")
-    public R aboutUs() {
-        InformationDownloadEntity ide = informationDownloadService.getOne(new LambdaQueryWrapper<InformationDownloadEntity>()
-                .eq(InformationDownloadEntity::getName, "关于我们"));
         if (ide == null) {
             return R.error("页面不存在！");
         }

@@ -1,5 +1,6 @@
 package io.renren.modules.app.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -18,7 +19,7 @@ public class TypeServicelmpl extends ServiceImpl<TypeDao, type> implements TypeS
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<type> page = this.page(
                 new Query<type>().getPage(params),
-                new QueryWrapper<type>()
+                new LambdaQueryWrapper<type>().like(type::getName, params.get("key"))
         );
 
         return new PageUtils(page);

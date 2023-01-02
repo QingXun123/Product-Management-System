@@ -21,7 +21,10 @@ public class type implements Serializable {
      * 类型名字
      */
     private String name;
+    private List<ProductEntity> product;
 
-    private String product;
+    public void type(List<ProductEntity> product) {
+        this.product = product;
+    }
 
 }

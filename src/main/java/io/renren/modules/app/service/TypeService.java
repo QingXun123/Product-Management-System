@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface TypeService extends IService<type> {
+
+
     PageUtils queryPage(Map<String, Object> params);
-
-
-
 }

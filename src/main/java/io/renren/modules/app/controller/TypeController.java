@@ -1,5 +1,6 @@
 package io.renren.modules.app.controller;
 
+import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.app.dao.TypeDao;
 import io.renren.modules.app.entity.ProductEntity;
@@ -25,6 +26,15 @@ public class TypeController {
     private TypeDao typeDao;
     @Autowired
     private ProductService productService;
+
+    @PostMapping("/list")
+    @ApiOperation("输出")
+    public R list(@RequestParam Map<String, Object> params) {
+        PageUtils page = typeService.queryPage(params);
+
+        return R.ok().put("page", page);
+    }
+
     @GetMapping("/list")
     @ApiOperation("输出")
     public R list() {
@@ -33,6 +43,7 @@ public class TypeController {
             return R.error("数据为空！");
         return R.ok().put("data", data);
     }
+
     @GetMapping("/typeid")
     @ApiOperation("类型对应产品")
     public R typeid() {
@@ -53,22 +64,29 @@ public class TypeController {
             return R.error("数据为空！");
         return R.ok().put("data1", data1);
     }
-    @GetMapping("/save")
+    @PostMapping("/save")
     @ApiOperation("保存")
     public R save(@RequestBody type type) {
         typeService.save(type);
         return R.ok();
     }
 
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     @ApiOperation("删除")
     public R delete(@RequestBody Integer[] ids) {
         typeService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }
+    @GetMapping("/delete")
+    @ApiOperation("删除")
+    public R delete2( Integer[] ids) {
+        typeService.removeByIds(Arrays.asList(ids));
 
-    @GetMapping("/update")
+        return R.ok();
+    }
+
+    @RequestMapping("/update")
     @ApiOperation("修改")
     public R update(@RequestBody type product) {
         typeService.updateById(product);
@@ -76,7 +94,7 @@ public class TypeController {
         return R.ok();
     }
 
-    @GetMapping("/info/{id}")
+    @RequestMapping("/info/{id}")
     @ApiOperation("查询")
     public R info(@PathVariable("id") Integer id) {
         type product = typeService.getById(id);
