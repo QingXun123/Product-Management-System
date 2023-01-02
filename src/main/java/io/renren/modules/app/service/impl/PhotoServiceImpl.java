@@ -29,7 +29,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoDao, PhotoEntity> impleme
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<PhotoEntity> page = this.page(
                 new Query<PhotoEntity>().getPage(params),
-                new QueryWrapper<PhotoEntity>()
+                new LambdaQueryWrapper<PhotoEntity>().like(PhotoEntity::getName, params.get("key"))
         );
 
         return new PageUtils(page);
@@ -37,10 +37,16 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoDao, PhotoEntity> impleme
 
     @Override
     public R RUpdate(PhotoEntity photo) {
-        MultipartFile file = BASE64DecodedMultipartFile.base64ToMultipart(photo.getPhoto());
-        photo.setPhoto(null);
-        updateById(photo);
-        upFile(file, photo.getId());
+        if (photo.getPhoto().substring(0, 1).equals("/")) {
+            photo.setPhoto(getOne(new LambdaQueryWrapper<PhotoEntity>()
+                    .eq(PhotoEntity::getId, photo.getId())).getPhoto());
+            updateById(photo);
+        } else {
+            MultipartFile file = BASE64DecodedMultipartFile.base64ToMultipart(photo.getPhoto());
+            photo.setPhoto(null);
+            updateById(photo);
+            upFile(file, photo.getId());
+        }
 
         return R.ok();
     }

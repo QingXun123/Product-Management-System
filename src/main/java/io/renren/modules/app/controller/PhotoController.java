@@ -50,7 +50,7 @@ public class PhotoController {
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("app:photo:list")
+//    @RequiresPermissions("app:photo:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = photoService.queryPage(params);
 
@@ -62,7 +62,7 @@ public class PhotoController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("app:photo:info")
+//    @RequiresPermissions("app:photo:info")
     public R info(@PathVariable("id") Integer id){
 		PhotoEntity photo = photoService.getById(id);
 
@@ -73,7 +73,7 @@ public class PhotoController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("app:photo:save")
+//    @RequiresPermissions("app:photo:save")
     public R save(@RequestBody PhotoEntity photo){
 		return photoService.RSave(photo);
     }
@@ -82,7 +82,7 @@ public class PhotoController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("app:photo:update")
+//    @RequiresPermissions("app:photo:update")
     public R update(@RequestBody PhotoEntity photo){
 		return photoService.RUpdate(photo);
     }
@@ -91,7 +91,7 @@ public class PhotoController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("app:photo:delete")
+//    @RequiresPermissions("app:photo:delete")
     public R delete(@RequestBody Integer[] ids){
 		photoService.removeByIds(Arrays.asList(ids));
 

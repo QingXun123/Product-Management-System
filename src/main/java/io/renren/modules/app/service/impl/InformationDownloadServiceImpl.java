@@ -28,7 +28,7 @@ public class InformationDownloadServiceImpl extends ServiceImpl<InformationDownl
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<InformationDownloadEntity> page = this.page(
                 new Query<InformationDownloadEntity>().getPage(params),
-                new QueryWrapper<InformationDownloadEntity>()
+                new LambdaQueryWrapper<InformationDownloadEntity>().like(InformationDownloadEntity::getName, params.get("key"))
         );
 
         return new PageUtils(page);

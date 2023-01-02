@@ -8,6 +8,7 @@ import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
 import io.renren.modules.app.dao.ProductDao;
+import io.renren.modules.app.entity.PhotoEntity;
 import io.renren.modules.app.entity.ProductEntity;
 import io.renren.modules.app.service.ProductService;
 import io.renren.modules.app.utils.BASE64DecodedMultipartFile;
@@ -31,7 +32,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> i
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<ProductEntity> page = this.page(
                 new Query<ProductEntity>().getPage(params),
-                new QueryWrapper<ProductEntity>()
+                new LambdaQueryWrapper<ProductEntity>().like(ProductEntity::getName, params.get("key"))
         );
 
         return new PageUtils(page);
@@ -39,10 +40,16 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> i
 
     @Override
     public R RUpdate(ProductEntity product) {
-        MultipartFile file = BASE64DecodedMultipartFile.base64ToMultipart(product.getPhoto());
-        product.setPhoto(null);
-        updateById(product);
-        upFile(file, product.getProductId());
+        if (product.getPhoto().substring(0, 1).equals("/")) {
+            product.setPhoto(getOne(new LambdaQueryWrapper<ProductEntity>()
+                    .eq(ProductEntity::getProductId, product.getProductId())).getPhoto());
+            updateById(product);
+        } else {
+            MultipartFile file = BASE64DecodedMultipartFile.base64ToMultipart(product.getPhoto());
+            product.setPhoto(null);
+            updateById(product);
+            upFile(file, product.getProductId());
+        }
 
         return R.ok();
     }

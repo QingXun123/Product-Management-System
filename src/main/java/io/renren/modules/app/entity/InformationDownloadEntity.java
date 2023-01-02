@@ -1,5 +1,7 @@
 package io.renren.modules.app.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -29,6 +31,7 @@ public class InformationDownloadEntity implements Serializable {
 	/**
 	 * 上一级id
 	 */
+	@TableField(fill = FieldFill.INSERT_UPDATE)
 	private Integer beforeId;
 	/**
 	 * 资料名字

@@ -81,7 +81,7 @@ public class ProductController {
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("app:product:list")
+//    @RequiresPermissions("app:product:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = productService.queryPage(params);
 
@@ -93,7 +93,7 @@ public class ProductController {
      * 信息
      */
     @RequestMapping("/info/{productId}")
-    @RequiresPermissions("app:product:info")
+//    @RequiresPermissions("app:product:info")
     public R info(@PathVariable("productId") Integer productId){
 		ProductEntity product = productService.getById(productId);
 
@@ -113,7 +113,7 @@ public class ProductController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("app:product:update")
+//    @RequiresPermissions("app:product:update")
     public R update(@RequestBody ProductEntity product){
         return productService.RUpdate(product);
     }
@@ -122,7 +122,7 @@ public class ProductController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("app:product:delete")
+//    @RequiresPermissions("app:product:delete")
     public R delete(@RequestBody Integer[] productIds){
 		productService.removeByIds(Arrays.asList(productIds));
 

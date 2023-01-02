@@ -1,25 +1,21 @@
 package io.renren.modules.app.controller;
 
-import java.io.File;
-import java.util.*;
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import io.renren.modules.app.dao.InformationDownloadDao;
+import io.renren.common.utils.PageUtils;
+import io.renren.common.utils.R;
+import io.renren.modules.app.entity.InformationDownloadEntity;
 import io.renren.modules.app.entity.InformationListEntity;
+import io.renren.modules.app.service.InformationDownloadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.crypto.hash.Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import io.renren.modules.app.entity.InformationDownloadEntity;
-import io.renren.modules.app.service.InformationDownloadService;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.R;
-import org.springframework.web.multipart.MultipartFile;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-import static io.lettuce.core.GeoArgs.Unit.m;
 import static io.renren.modules.app.utils.PhotoUtils.PHOTO_URL_REGEX;
 
 
@@ -36,6 +32,17 @@ import static io.renren.modules.app.utils.PhotoUtils.PHOTO_URL_REGEX;
 public class InformationDownloadController {
     @Autowired
     private InformationDownloadService informationDownloadService;
+
+    /**
+     * 返回最高级资料列表数据
+     */
+    @GetMapping("/top")
+    @ApiOperation("最高级资料列表")
+    public R topList() {
+        List<InformationDownloadEntity> ideL = informationDownloadService.list(new LambdaQueryWrapper<InformationDownloadEntity>()
+                .isNull(InformationDownloadEntity::getBeforeId).ne(InformationDownloadEntity::getName, "关于我们").ne(InformationDownloadEntity::getName, "资料下载"));
+        return R.ok().put("data", ideL);
+    }
 
     @GetMapping("/text/{id}")
     @ApiOperation("根据产品id拿到富文本数据")
@@ -96,7 +103,7 @@ public class InformationDownloadController {
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("app:informationdownload:list")
+//    @RequiresPermissions("app:informationdownload:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = informationDownloadService.queryPage(params);
 
@@ -108,7 +115,7 @@ public class InformationDownloadController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("app:informationdownload:info")
+//    @RequiresPermissions("app:informationdownload:info")
     public R info(@PathVariable("id") Integer id){
 		InformationDownloadEntity informationDownload = informationDownloadService.getById(id);
 
@@ -119,8 +126,9 @@ public class InformationDownloadController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("app:informationdownload:save")
+//    @RequiresPermissions("app:informationdownload:save")
     public R save(@RequestBody InformationDownloadEntity informationDownload){
+        System.out.println(informationDownload.getBeforeId());
 		informationDownloadService.save(informationDownload);
 
         return R.ok();
@@ -130,7 +138,7 @@ public class InformationDownloadController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("app:informationdownload:update")
+//    @RequiresPermissions("app:informationdownload:update")
     public R update(@RequestBody InformationDownloadEntity informationDownload){
 		informationDownloadService.updateById(informationDownload);
 
@@ -141,7 +149,7 @@ public class InformationDownloadController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("app:informationdownload:delete")
+//    @RequiresPermissions("app:informationdownload:delete")
     public R delete(@RequestBody Integer[] ids){
 		informationDownloadService.removeByIds(Arrays.asList(ids));
 
