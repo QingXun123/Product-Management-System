@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @TableName("type")
-public class type implements Serializable {
+public class type implements Serializable, Comparable<type> {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -27,4 +27,8 @@ public class type implements Serializable {
         this.product = product;
     }
 
+    @Override
+    public int compareTo(type o) {
+        return o.getProduct().size() - this.getProduct().size();
+    }
 }

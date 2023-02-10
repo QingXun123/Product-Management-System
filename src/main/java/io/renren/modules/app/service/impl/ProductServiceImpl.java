@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import static io.renren.modules.app.utils.PhotoUtils.PHOTO_URL;
@@ -40,6 +41,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> i
 
     @Override
     public R RUpdate(ProductEntity product) {
+        if (product.getSlide() == 1 && productDao.selectList(new LambdaQueryWrapper<ProductEntity>()
+                .eq(ProductEntity::getSlide, 1)).size() > 5) {
+            return R.error("轮播图图片数量超过上限！");
+        }
         if (product.getPhoto().substring(0, 1).equals("/")) {
             product.setPhoto(getOne(new LambdaQueryWrapper<ProductEntity>()
                     .eq(ProductEntity::getProductId, product.getProductId())).getPhoto());
@@ -56,6 +61,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, ProductEntity> i
 
     @Override
     public R RSave(ProductEntity product) {
+        if (product.getSlide() == 1 && productDao.selectList(new LambdaQueryWrapper<ProductEntity>()
+                .eq(ProductEntity::getSlide, 1)).size() >= 5) {
+            return R.error("轮播图图片数量超过上限！");
+        }
         MultipartFile file = BASE64DecodedMultipartFile.base64ToMultipart(product.getPhoto());
         product.setPhoto(null);
         save(product);

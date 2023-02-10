@@ -1,5 +1,6 @@
 package io.renren.modules.app.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.app.dao.TypeDao;
@@ -10,6 +11,7 @@ import io.renren.modules.app.service.ProductService;
 import io.renren.modules.app.service.TypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +46,36 @@ public class TypeController {
         return R.ok().put("data", data);
     }
 
+    @GetMapping("/typelist")
+    @ApiOperation("类型对应产品")
+    public R typeList() {
+        List<type> data1 = typeService.list();
+        List<ProductEntity> data2 = productService.list();
+        List<ProductEntity> data3 = new ArrayList<>();
+        for(type t: data1) {
+            for(ProductEntity product : data2){
+                if(t.getTypeId() == product.getTypeId()){
+                    data3.add(product);
+                }
+            }
+            t.type(data3);
+            data3 = new ArrayList<>();
+
+        }
+        if (data1.isEmpty() || data2.isEmpty())
+            return R.error("数据为空！");
+        Collections.sort(data1);
+        Iterator<type> iterator = data1.iterator();
+        List<type> data = new ArrayList<>();
+        int cnt = 1;
+        while(iterator.hasNext()) {
+            if (cnt++ > 8)
+                break;
+            data.add(iterator.next());
+        }
+        return R.ok().put("data1", data);
+    }
+
     @GetMapping("/typeid")
     @ApiOperation("类型对应产品")
     public R typeid() {
@@ -64,6 +96,7 @@ public class TypeController {
             return R.error("数据为空！");
         return R.ok().put("data1", data1);
     }
+
     @PostMapping("/save")
     @ApiOperation("保存")
     public R save(@RequestBody type type) {
