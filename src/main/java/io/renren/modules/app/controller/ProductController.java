@@ -5,15 +5,11 @@ import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.app.entity.ProductEntity;
 import io.renren.modules.app.service.ProductService;
-import io.renren.modules.app.utils.BASE64DecodedMultipartFile;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +45,9 @@ public class ProductController {
     @GetMapping("/get/{id}")
     public R getProduct(@RequestParam("id") Integer id) {
         ProductEntity ide = productService.getOne(new LambdaQueryWrapper<ProductEntity>()
+                .select(ProductEntity.class,
+                        info -> !info.getColumn().equals("text"))
                 .eq(ProductEntity::getProductId, id));
-        ide.setText(ide.getText().replaceAll(PHOTO_URL_REGEX, ""));
         if (ide == null) {
             return R.error("产品不存在！");
         }
@@ -61,6 +58,10 @@ public class ProductController {
     @GetMapping("/slideshow")
     public R slideshow() {
         List<ProductEntity> bySlideshow = productService.list(new LambdaQueryWrapper<ProductEntity>()
+                .select(ProductEntity::getProductId,
+                        ProductEntity::getName,
+                        ProductEntity::getPhoto,
+                        ProductEntity::getTypeId)
                 .eq(ProductEntity::getSlide, 1));
         if (bySlideshow.isEmpty())
             return R.error("数据为空！");
@@ -71,9 +72,14 @@ public class ProductController {
     @GetMapping("/hot")
     public R hot() {
         List<ProductEntity> byHot = productService.list(new LambdaQueryWrapper<ProductEntity>()
+                .select(ProductEntity::getProductId,
+                        ProductEntity::getName,
+                        ProductEntity::getPhoto,
+                        ProductEntity::getTypeId)
                 .eq(ProductEntity::getHot, 1));
-        if (byHot.isEmpty())
+        if (byHot.isEmpty()) {
             return R.error("数据为空！");
+        }
         return R.ok().put("data", byHot);
     }
 

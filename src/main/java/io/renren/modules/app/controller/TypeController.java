@@ -50,7 +50,12 @@ public class TypeController {
     @ApiOperation("类型对应产品")
     public R typeList() {
         List<type> data1 = typeService.list();
-        List<ProductEntity> data2 = productService.list();
+        List<ProductEntity> data2 = productService.list(new LambdaQueryWrapper<ProductEntity>()
+                .select(ProductEntity::getProductId,
+                        ProductEntity::getName,
+                        ProductEntity::getPhoto,
+                        ProductEntity::getTypeId)
+                .eq(ProductEntity::getSlide, 1));
         List<ProductEntity> data3 = new ArrayList<>();
         for(type t: data1) {
             for(ProductEntity product : data2){
@@ -80,7 +85,12 @@ public class TypeController {
     @ApiOperation("类型对应产品")
     public R typeid() {
         List<type> data1 = typeService.list();
-        List<ProductEntity> data2 = productService.list();
+        List<ProductEntity> data2 = productService.list(new LambdaQueryWrapper<ProductEntity>()
+                .select(ProductEntity::getProductId,
+                        ProductEntity::getName,
+                        ProductEntity::getPhoto,
+                        ProductEntity::getTypeId)
+                .eq(ProductEntity::getSlide, 1));
         List<ProductEntity> data3 = new ArrayList<>();
         for(type t: data1) {
             for(ProductEntity product : data2){
@@ -107,8 +117,18 @@ public class TypeController {
     @PostMapping("/delete")
     @ApiOperation("删除")
     public R delete(@RequestBody Integer[] ids) {
-        typeService.removeByIds(Arrays.asList(ids));
-
+        List<Integer> list = new ArrayList<>();
+        boolean flag = false;
+        for (Integer i : ids) {
+            int count = productService.count(new LambdaQueryWrapper<ProductEntity>().eq(ProductEntity::getTypeId, i));
+            if (count == 0)
+                list.add(i);
+            else
+                flag = true;
+        }
+        typeService.removeByIds(list);
+        if (flag)
+            return R.error("表中存在无法删除的数据！");
         return R.ok();
     }
     @GetMapping("/delete")

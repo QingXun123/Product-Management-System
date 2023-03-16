@@ -55,6 +55,19 @@ public class ImportantInformationController {
         return R.ok().put("data", ide.getText().replaceAll(PHOTO_URL_REGEX, ""));
     }
 
+    @GetMapping("/shop")
+    @ApiOperation("淘宝链接")
+    public R shopURL() {
+        ImportantInformationEntity ide = importantInformationService.getOne(new LambdaQueryWrapper<ImportantInformationEntity>()
+                .eq(ImportantInformationEntity::getName, "淘宝链接"));
+        if (ide == null) {
+            return R.error("页面不存在！");
+        }
+        String text = ide.getText();
+        text = text.substring(3, text.length() - 4);
+        return R.ok().put("data", text);
+    }
+
     /**
      * 列表
      */
